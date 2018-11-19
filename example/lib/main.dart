@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void Response(query) async {
+  void receivedResponse(query) async {
     _textController.clear();
     Dialogflow dialogflow =Dialogflow(token: "10178f9cb6cf44288a4af4aae75c87cd");
     AIResponse response = await dialogflow.sendQuery(query);
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
     setState(() {
       _messages.insert(0, message);
     });
-    Response(text);
+    receivedResponse(text);
   }
 
   @override

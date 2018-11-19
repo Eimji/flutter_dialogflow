@@ -49,6 +49,15 @@ class Fulfillment {
     return this._messages[0]["speech"];
   }
 
+  getMessagePayload() {
+    if (this._messages.length > 1) {
+      return this._messages[1]["payload"];
+    } else {
+      return null;
+    }
+    
+  }
+
   getSpeechResponse() {
     return this._speech;
   }
@@ -197,6 +206,7 @@ class AIResponse {
       print(this._status.getErrorDetails);
       throw new FormatException(this._status.getErrorDetails);
     } else {
+      //print('$response');
       this._id = response["id"];
       this._timestamp = response["timestamp"];
       this._lang = response["lang"];
@@ -206,6 +216,10 @@ class AIResponse {
 
   getMessageResponse() {
     return this._result.getFulfillment.getMessageResponse();
+  }
+
+  getMessagePayload() {
+    return this._result.getFulfillment.getMessagePayload();
   }
 
   getSpeechResponse() {
@@ -265,15 +279,15 @@ class Dialogflow {
 
   String _getUrl(query) {
     return "https://api.dialogflow.com/v1/query?v=$version&contexts=$query"
-        "&lang=es&query=$query&lang=$language&sessionId=$sessionId&timezone=$timezone";
+        "&query=$query&lang=$language&sessionId=$sessionId&timezone=$timezone";
   }
 
   Future<AIResponse> sendQuery(query) async {
     var response = await http.get(
       _getUrl(query),
-      headers: {HttpHeaders.AUTHORIZATION: "Bearer " + token},
+      headers: {HttpHeaders.authorizationHeader: "Bearer " + token},
     );
-    Map data = JSON.decode(response.body);
+    Map data = JsonCodec().decode(response.body);
     AIResponse aiResponse = new AIResponse(data);
     return aiResponse;
   }
