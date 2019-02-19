@@ -59,6 +59,7 @@ class AIResponse {
   WebhookStatus _webhookStatus;
 
   AIResponse({Map body}) {
+    print(body);
     _responseId = body['responseId'];
     _intentDetectionConfidence = body['intentDetectionConfidence'];
     _queryResult = new QueryResult(body['queryResult']);
@@ -81,6 +82,15 @@ class AIResponse {
 
   List<dynamic> getListMessage() {
     return _queryResult.fulfillmentMessages;
+  }
+
+  Map<String, dynamic> getMessagePayload() {
+    if (_queryResult.fulfillmentMessages.length > 1) {
+      return _queryResult.fulfillmentMessages[1]["payload"];
+    } else {
+      return null;
+    }
+    
   }
 
   num get intentDetectionConfidence {
