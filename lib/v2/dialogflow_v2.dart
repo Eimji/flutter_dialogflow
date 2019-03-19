@@ -59,7 +59,6 @@ class AIResponse {
   WebhookStatus _webhookStatus;
 
   AIResponse({Map body}) {
-    print(body);
     _responseId = body['responseId'];
     _intentDetectionConfidence = body['intentDetectionConfidence'];
     _queryResult = new QueryResult(body['queryResult']);
